@@ -173,6 +173,22 @@ DISM /online /disable-feature /featurename:SMB
 
 :: -------------------------------------------------Windows Settings-------------------------------------------------
 
+choice /m "Change All User Passwords?"
+if Errorlevel 2 goto NoChangePassword1
+if Errorlevel 1 goto YesChangePassword1
+
+:NoChangePassword1
+
+goto EndChangePassword1
+
+:YesChangePassword1
+
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
+
+:EndChangePassword1
+
+echo Changed All Passwords to j273e4*KeH49kDW
+
 choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows
 if Errorlevel 1 goto YesUpdateWindows
@@ -188,24 +204,6 @@ start ms-settings:
 :EndUpdateWindows
 
 goto EndBatchScript
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 :: ---------------------------------------------------------Windows 10---------------------------------------------------------
 
@@ -321,11 +319,48 @@ DISM /online /disable-feature /featurename:TFTP
 DISM /online /disable-feature /featurename:SNMP
 DISM /online /disable-feature /featurename:SMB
 
-echo Blocking all Microsoft Accounts
+echo Blocking All Microsoft Accounts
 
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 :: -------------------------------------------------Windows Settings-------------------------------------------------
+
+choice /m "Change All User Passwords?"
+if Errorlevel 2 goto NoChangePassword1
+if Errorlevel 1 goto YesChangePassword1
+
+:NoChangePassword1
+
+goto EndChangePassword1
+
+:YesChangePassword1
+
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
+
+:EndChangePassword1
+
+echo Changed All Passwords to j273e4*KeH49kDW
 
 choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows
@@ -343,40 +378,10 @@ start ms-settings:
 
 goto EndBatchScript
 
-
-
-
-
-
-
-
-
-choice /m "Change All User Passwords?"
-if Errorlevel 2 goto NoChangePassword1
-if Errorlevel 1 goto YesChangePassword1
-
-:NoChangePassword1
-
-goto EndChangePassword1
-
-:YesChangePassword1
-
-FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
-
-:EndChangePassword1
-
-
-
-
-
-echo Changing All Passwords to j273e4*KeH49kDW
-
-FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
-
-
-
-:: ---------------------------------------------------------End of Batch Script---------------------------------------------------
+:: ---------------------------------------------------------End of Batch Script---------------------------------------------------------
 
 :EndBatchScript
+
+echo Script Has Finished
 
 pause

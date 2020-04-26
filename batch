@@ -35,25 +35,15 @@ if Errorlevel 1 goto YesWindowsServer
 
 goto EndWindowsServer
 
-::----------------------------------------------------Windows Server-------------------------------------------------------
+:: ---------------------------------------------------------Windows Server---------------------------------------------------------
 
 :YesWindowsServer
 
-:: -------------------------------------Local Security Policy-------------------------------------
+:: -------------------------------------------------Local Security Policy-------------------------------------------------
 
-:: Password and Logon Policy
+:: --------------------Password and Logon Policy--------------------
 
-choice /m "Update Logon and Password Policy?"
-if Errorlevel 2 goto NoPasswordPolicy
-if Errorlevel 1 goto YesPasswordPolicy
-
-:NoPasswordPolicy
-
-goto EndPasswordPolicy
-
-:YesPasswordPolicy
-
-echo Updating Password Policy...
+echo Updating Password Policy
 
 net accounts /uniquepw:5
 net accounts /minpwlen:14
@@ -78,41 +68,17 @@ echo Import successful...
 del c:\secconfig.cfg
 del c:\secconfigupdated.cfg
 
-:EndPasswordPolicy
+:: --------------------Lockout Policy--------------------
 
-:: Lockout Policy
-
-choice /m "Update Lockout Policy?"
-if Errorlevel 2 goto NoLockoutPolicy
-if Errorlevel 1 goto YesLockoutPolicy
-
-:NoLockoutPolicy
-
-goto EndLockoutPolicy
-
-:YesLockoutPolicy
-
-echo Updating Account Lockout Policy...
+echo Updating Account Lockout Policy
 
 net accounts /lockoutduration:30
 net accounts /lockoutthreshold:5
 net accounts /lockoutwindow:30
 
-:EndLockoutPolicy
+:: --------------------Audit Policy--------------------
 
-:: Audit Policy
-
-choice /m "Update Audit Policy?"
-if Errorlevel 2 goto NoAuditPolicy
-if Errorlevel 1 goto YesAuditPolicy
-
-:NoAuditPolicy
-
-goto EndAuditPolicy
-
-:YesAuditPolicy
-
-echo Updating Audit Policies...
+echo Updating Audit Policies
 
 Auditpol /set /category:"Account Logon" /success:enable /failure:enable
 Auditpol /set /category:"Account Management" /success:enable /failure:enable
@@ -124,183 +90,68 @@ Auditpol /set /category:"Policy Change" /success:enable /failure:enable
 Auditpol /set /category:"Privilege Use" /success:enable /failure:enable
 Auditpol /set /category:"System" /success:enable /failure:enable
 
-:EndAuditPolicy
+:: --------------------Firewall Policy--------------------
 
-:: Firewall Policy
-
-choice /m "Enable Firewall?"
-if Errorlevel 2 goto NoConfigureFirewall
-if Errorlevel 1 goto YesConfigureFirewall
-
-:NoConfigureFirewall
-
-goto EndConfigureFirewall
-
-:YesConfigureFirewall
-
-echo Configuring Firewall...
+echo Configuring Firewall
 
 netsh advfirewall set allprofiles state on
 
-:EndConfigureFirewall
+:: -------------------------------------------------lusrmgr Settings-------------------------------------------------
 
-:: ---------------------------------------lusrmgr Settings-------------------------------------
+:: --------------------Default Accounts--------------------
 
-:: Default Accounts
-
-choice /m "Disable and Rename Default Guest Account?"
-if Errorlevel 2 goto NoGuestAccount
-if Errorlevel 1 goto YesGuestAccount
-
-:NoGuestAccount
-
-goto EndGuestAccount
-
-:YesGuestAccount
+echo Updating Default Accounts
 
 net user guest /active:no
 wmic useraccount where name='Guest' rename 'Potato'
 
-:EndGuestAccount
-
-choice /m "Disable and Rename Default Administrator Account?"
-if Errorlevel 2 goto NoAdminAccount
-if Errorlevel 1 goto YesAdminAccount
-
-:NoAdminAccount
-
-goto EndAdminAccount
-
-:YesAdminAccount
-
 net user Administrator /active:no
 wmic useraccount where name='Administrator' rename 'Tomato'
 
-:EndAdminAccount
+:: -------------------------------------------------Services-------------------------------------------------
 
-choice /m "Change All User Passwords?"
-if Errorlevel 2 goto NoChangePassword
-if Errorlevel 1 goto YesChangePassword
-
-:NoChangePassword
-
-goto EndChangePassword
-
-:YesChangePassword
-
-FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
-
-:EndChangePassword
-
-:: ----------------------------------------Services-------------------------------------
-
-choice /m "Disable World Wide Web Publishing Service?"
-if Errorlevel 2 goto NoWWPS
-if Errorlevel 1 goto YesWWPS
-
-:NoWWPS
-
-goto EndWWPS
-
-:YesWWPS
+echo Updating Services
 
 sc config w3svc start=disabled
 sc stop w3svc
 
-:EndWWPS
-
-choice /m "Make EventLog Automatic?"
-if Errorlevel 2 goto NoEventLog
-if Errorlevel 1 goto YesEventLog
-
-:NoEventLog
-
-goto EndEventLog
-
-:YesEventLog
-
 sc config eventlog start=auto
 net start eventlog
 
-:EndEventLog
-
-choice /m "Disable Remote Desktop, RDP, and Remote Registry Services?"
-if Errorlevel 2 goto NoRemoteDesktop
-if Errorlevel 1 goto YesRemoteDesktop
-
-:NoRemoteDesktop
-
-goto EndRemoteDesktop
-
-:YesRemoteDesktop
-
 net stop TermService
 sc config "TermService" start=disabled
+
 net stop RemoteRegistry
 sc config "RemoteRegistry" start=disabled
+
 net stop UmRdpService
 sc config "UmRdpService" start= disabled
+
 sc stop RemoteAccess
 sc config "RemoteAccess" start= disabled
 
-:EndRemoteDesktop
-
 :: ----------------------------------------Other Settings---------------------------------
 
-choice /m "Delete .mp3, .mp4, and .mov files?"
-if Errorlevel 2 goto EndMediaFiles
-if Errorlevel 1 goto EndMediaFiles
+echo Configuring DNS to Automatic
 
-:NoMediaFiles
+netsh interface ip set dnsservers name="Ethernet" source=dhcp
 
-goto EndMediaFiles
-
-:YesMediaFiles
+echo Deleting Certain Media Files
 
 del /S /Q *.mp3
 del /S /Q *.mp4
 del /S /Q *.mov
 
-:EndMediaFiles
-
-choice /m "Clean Host File?"
-if Errorlevel 2 goto NoHostFile
-if Errorlevel 1 goto YesHostFile
-
-:NoHostFile
-
-goto EndHostFile
-
-:YesHostFile
+echo Cleaning Host File
 
 copy %WinDir%\System32\drivers\etc\hosts %WinDir%\System32\drivers\etc\hosts.old
 break > %WinDir%\System32\drivers\etc\hosts
 
-:EndHostFile
-
-choice /m "Turn Off Sharing?"
-if Errorlevel 2 goto NoSharing
-if Errorlevel 1 goto YesSharing
-
-:NoSharing
-
-goto EndSharing
-
-:YesSharing
+echo Disabling Sharing
 
 net share C:\ /delete
 
-:EndSharing
-
-choice /m "Turn Off Certain Features (Check ReadMe) (takes a long time or is broken?)?"
-if Errorlevel 2 goto NoServices
-if Errorlevel 1 goto YesServices
-
-:NoServices
-
-goto EndServices
-
-:YesServices
+echo Disabling Certain Features
 
 DISM /online /disable-feature /featurename:TelnetClient
 DISM /online /disable-feature /featurename:TelnetServer
@@ -308,7 +159,17 @@ DISM /online /disable-feature /featurename:TFTP
 DISM /online /disable-feature /featurename:SNMP
 DISM /online /disable-feature /featurename:SMB
 
-:EndServices
+
+
+
+
+
+
+
+
+
+
+
 
 :: ---------------------------------------Windows Settings-------------------------------------
 
@@ -604,6 +465,15 @@ start ms-settings:
 :EndUpdateWindows
 
 goto EndBatchScript
+
+
+
+
+echo Changing All Passwords to j273e4*KeH49kDW
+
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
+
+
 
 :: ---------------------------------------------------------End of Batch Script---------------------------------------------------
 

@@ -132,9 +132,46 @@ sc config "RemoteAccess" start= disabled
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 echo Configuring DNS to Automatic
 
 netsh interface ip set dnsservers name="Ethernet" source=dhcp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 echo Deleting Certain Media Files
 
@@ -295,6 +332,18 @@ sc stop RemoteAccess
 sc config "RemoteAccess" start= disabled
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 
 echo Deleting Certain Media Files
 

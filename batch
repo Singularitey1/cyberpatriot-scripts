@@ -130,7 +130,7 @@ sc config "UmRdpService" start= disabled
 sc stop RemoteAccess
 sc config "RemoteAccess" start= disabled
 
-:: ----------------------------------------Other Settings---------------------------------
+:: -------------------------------------------------Other Settings-------------------------------------------------
 
 echo Configuring DNS to Automatic
 
@@ -171,7 +171,7 @@ DISM /online /disable-feature /featurename:SMB
 
 
 
-:: ---------------------------------------Windows Settings-------------------------------------
+:: -------------------------------------------------Windows Settings-------------------------------------------------
 
 choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows
@@ -189,25 +189,33 @@ start ms-settings:
 
 goto EndBatchScript
 
-:: ------------------------------------------------------------Windows 10---------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: ---------------------------------------------------------Windows 10---------------------------------------------------------
 
 :EndWindowsServer
 
-:: -------------------------------------Local Security Policy-------------------------------------
+:: -------------------------------------------------Local Security Policy-------------------------------------------------
 
-:: Password and Logon Policy
+:: --------------------Password and Logon Policy--------------------
 
-choice /m "Update Logon and Password Policy?"
-if Errorlevel 2 goto NoPasswordPolicy1
-if Errorlevel 1 goto YesPasswordPolicy1
-
-:NoPasswordPolicy1
-
-goto EndPasswordPolicy1
-
-:YesPasswordPolicy1
-
-echo Updating Password Policy...
+echo Updating Password Policy
 
 net accounts /uniquepw:5
 net accounts /minpwlen:14
@@ -232,39 +240,15 @@ echo Import successful...
 del c:\secconfig.cfg
 del c:\secconfigupdated.cfg
 
-:EndPasswordPolicy1
+:: --------------------Lockout Policy--------------------
 
-:: Lockout Policy
-
-choice /m "Update Lockout Policy?"
-if Errorlevel 2 goto NoLockoutPolicy1
-if Errorlevel 1 goto YesLockoutPolicy1
-
-:NoLockoutPolicy1
-
-goto EndLockoutPolicy1
-
-:YesLockoutPolicy1
-
-echo Updating Account Lockout Policy...
+echo Updating Account Lockout Policy
 
 net accounts /lockoutduration:30
 net accounts /lockoutthreshold:5
 net accounts /lockoutwindow:30
 
-:EndLockoutPolicy1
-
-:: Audit Policy
-
-choice /m "Update Audit Policy?"
-if Errorlevel 2 goto NoAuditPolicy1
-if Errorlevel 1 goto YesAuditPolicy1
-
-:NoAuditPolicy1
-
-goto EndAuditPolicy1
-
-:YesAuditPolicy1
+:: --------------------Audit Policy--------------------
 
 echo Updating Audit Policies...
 
@@ -278,153 +262,58 @@ Auditpol /set /category:"Policy Change" /success:enable /failure:enable
 Auditpol /set /category:"Privilege Use" /success:enable /failure:enable
 Auditpol /set /category:"System" /success:enable /failure:enable
 
-:EndAuditPolicy1
+:: --------------------Firewall Policy--------------------
 
-:: Firewall Policy
-
-choice /m "Enable Firewall?"
-if Errorlevel 2 goto NoConfigureFirewall1
-if Errorlevel 1 goto YesConfigureFirewall1
-
-:NoConfigureFirewall1
-
-goto EndConfigureFirewall1
-
-:YesConfigureFirewall1
-
-echo Configuring Firewall...
+echo Configuring Firewall
 
 netsh advfirewall set allprofiles state on
 
-:EndConfigureFirewall1
+:: -------------------------------------------------lusrmgr Settings-------------------------------------------------
 
-:: ---------------------------------------lusrmgr Settings-------------------------------------
+:: --------------------Default Accounts--------------------
 
-:: Default Accounts
-
-choice /m "Disable and Rename Default Guest Account?"
-if Errorlevel 2 goto NoGuestAccount1
-if Errorlevel 1 goto YesGuestAccount1
-
-:NoGuestAccount1
-
-goto EndGuestAccount1
-
-:YesGuestAccount1
+echo Updating Default Accounts
 
 net user guest /active:no
 wmic useraccount where name='Guest' rename 'Potato'
 
-:EndGuestAccount1
-
-choice /m "Disable and Rename Default Administrator Account?"
-if Errorlevel 2 goto NoAdminAccount1
-if Errorlevel 1 goto YesAdminAccount1
-
-:NoAdminAccount1
-
-goto EndAdminAccount1
-
-:YesAdminAccount1
-
 net user Administrator /active:no
 wmic useraccount where name='Administrator' rename 'Tomato'
 
-:EndAdminAccount1
+:: -------------------------------------------------Services-------------------------------------------------
 
-choice /m "Change All User Passwords?"
-if Errorlevel 2 goto NoChangePassword1
-if Errorlevel 1 goto YesChangePassword1
-
-:NoChangePassword1
-
-goto EndChangePassword1
-
-:YesChangePassword1
-
-FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
-
-:EndChangePassword1
-
-:: ----------------------------------------Services-------------------------------------
-
-choice /m "Disable Remote Desktop, RDP, and Remote Registry Services?"
-if Errorlevel 2 goto NoRemoteDesktop1
-if Errorlevel 1 goto YesRemoteDesktop1
-
-:NoRemoteDesktop1
-
-goto EndRemoteDesktop1
-
-:YesRemoteDesktop1
+echo Updating Services
 
 net stop TermService
 sc config "TermService" start=disabled
+
 net stop RemoteRegistry
 sc config "RemoteRegistry" start=disabled
+
 sc stop UmRdpService
 sc config "UmRdpService" start= disabled
+
 sc stop RemoteAccess
 sc config "RemoteAccess" start= disabled
 
-:EndRemoteDesktop1
+:: -------------------------------------------------Other Settings-------------------------------------------------
 
-:: ----------------------------------------Other Settings---------------------------------
-
-choice /m "Delete .mp3, .mp4, and .mov files (dont)?"
-if Errorlevel 2 goto EndMediaFiles1
-if Errorlevel 1 goto EndMediaFiles1
-
-:NoMediaFiles1
-
-goto EndMediaFiles1
-
-:YesMediaFiles1
+echo Deleting Certain Media Files
 
 del /S /Q *.mp3
 del /S /Q *.mp4
 del /S /Q *.mov
 
-:EndMediaFiles1
-
-choice /m "Turn Off Sharing?"
-if Errorlevel 2 goto NoSharing1
-if Errorlevel 1 goto YesSharing1
-
-:NoSharing1
-
-goto EndSharing1
-
-:YesSharing1
+echo Disable Sharing
 
 net share C:\ /delete
 
-:EndSharing1
-
-choice /m "Clean Host File?"
-if Errorlevel 2 goto NoHostFileClean
-if Errorlevel 1 goto YesHostFileClean
-
-:NoHostFileClean
-
-goto EndHostFileClean
-
-:YesHostFileClean
+echo Cleaning Host File
 
 copy %WinDir%\System32\drivers\etc\hosts %WinDir%\System32\drivers\etc\hosts.old
 break > %WinDir%\System32\drivers\etc\hosts
 
-:EndHostFileClean
-
-choice /m "Turn Off Certain Features (Check ReadMe) (takes a long time or is broken?)?"
-if Errorlevel 2 goto NoServices
-if Errorlevel 1 goto YesServices
-
-:NoServices
-
-goto EndServices
-
-:YesServices
+echo Disabling Certain Features
 
 DISM /online /disable-feature /featurename:TelnetClient
 DISM /online /disable-feature /featurename:TelnetServer
@@ -432,23 +321,11 @@ DISM /online /disable-feature /featurename:TFTP
 DISM /online /disable-feature /featurename:SNMP
 DISM /online /disable-feature /featurename:SMB
 
-:EndServices
-
-choice /m "Block All Microsoft Accounts?"
-if Errorlevel 2 goto NoBlockMicrosoftAccounts
-if Errorlevel 1 goto YesBlockMicrosoftAccounts
-
-:NoBlockMicrosoftAccounts
-
-goto EndBlockMicrosoftAccounts
-
-:YesBlockMicrosoftAccounts
+echo Blocking all Microsoft Accounts
 
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
 
-:EndBlockMicrosoftAccounts
-
-:: ---------------------------------------Windows Settings-------------------------------------
+:: -------------------------------------------------Windows Settings-------------------------------------------------
 
 choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows
@@ -465,6 +342,29 @@ start ms-settings:
 :EndUpdateWindows
 
 goto EndBatchScript
+
+
+
+
+
+
+
+
+
+choice /m "Change All User Passwords?"
+if Errorlevel 2 goto NoChangePassword1
+if Errorlevel 1 goto YesChangePassword1
+
+:NoChangePassword1
+
+goto EndChangePassword1
+
+:YesChangePassword1
+
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
+
+:EndChangePassword1
+
 
 
 

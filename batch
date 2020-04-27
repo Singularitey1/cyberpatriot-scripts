@@ -234,7 +234,7 @@ FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NU
 
 :EndChangePassword1
 
-echo Changed All Passwords to j273e4*KeH49kDW
+echo Changed all passwords to "j273e4*KeH49kDW". Write it down.
 
 choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows

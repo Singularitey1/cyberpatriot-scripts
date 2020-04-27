@@ -206,7 +206,10 @@ DISM /online /disable-feature /featurename:TFTP
 DISM /online /disable-feature /featurename:SNMP
 DISM /online /disable-feature /featurename:SMB
 
+echo Disabling Remote Assistance
 
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
+netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
 
 
 
@@ -382,7 +385,10 @@ echo Blocking All Microsoft Accounts
 
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
 
+echo Disabling Remote Assistance
 
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
+netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
 
 
 

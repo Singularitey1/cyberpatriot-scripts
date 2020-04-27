@@ -132,57 +132,6 @@ sc config "RemoteAccess" start= disabled
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-echo Configuring DNS to Automatic
-
-ipconfig /flushdns
-
-netsh interface ip set dns name="Local Area Connection" source=static addr=none
-netsh interface ip set dns "Local Area Connection" dhcp
-netsh interface ip set dns name="Local Area Connection" dhcp
-netsh interface ip set dns name="Local Area Connection" source=dhcp
-netsh interface ip set dnsservers name="Local Area Connection" source=dhcp
-
-:: ipconfig -all
-
-:: REPLACE "LOCAL AREA CONNECTION" WITH THE NAME OF THE INTERFACE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 echo Deleting Certain Media Files
 
 del /S /Q *.mp3
@@ -345,18 +294,6 @@ sc stop RemoteAccess
 sc config "RemoteAccess" start= disabled
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
 
 echo Deleting Certain Media Files
 

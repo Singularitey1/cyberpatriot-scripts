@@ -153,7 +153,9 @@ sc config "RemoteAccess" start= disabled
 
 echo Configuring DNS to Automatic
 
-netsh interface ip set dnsservers name="Ethernet" source=dhcp
+netsh interface ip set dns "Local Area Connection" dhcp
+
+:: REPLACE "LOCAL AREA CONNECTION" WITH THE NAME OF THE INTERFACE
 
 
 

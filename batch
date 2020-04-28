@@ -127,8 +127,11 @@ sc config "RemoteRegistry" start=disabled
 net stop UmRdpService
 sc config "UmRdpService" start= disabled
 
-sc stop RemoteAccess
-sc config "RemoteAccess" start= disabled
+sc config WinDefend start= auto
+net start WinDefend
+
+sc config Sense start= auto
+net start Sense
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
@@ -292,9 +295,6 @@ sc config "RemoteRegistry" start=disabled
 
 sc stop UmRdpService
 sc config "UmRdpService" start= disabled
-
-sc stop RemoteAccess
-sc config "RemoteAccess" start= disabled
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 

@@ -1,0 +1,2 @@
+Set-MpPreference -EnableControlledFolderAccess Enabled
+Set-MpPreference -DisableRealtimeMonitoring $false

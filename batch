@@ -133,6 +133,10 @@ net start WinDefend
 sc config Sense start=auto
 sc start Sense
 
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 0 /f
+sc config wuauserv start=auto
+net start wuauserv
+
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
 echo Deleting Certain Media Files
@@ -312,6 +316,10 @@ net start WinDefend
 
 sc config Sense start=auto
 sc start Sense
+
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 0 /f
+sc config wuauserv start=auto
+net start wuauserv
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 

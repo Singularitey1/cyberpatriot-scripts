@@ -167,8 +167,13 @@ echo Enabling DEP Protection
 
 bcdedit.exe /set {current} nx AlwaysOn
 
+echo Enabling User Account Control
 
+C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
 
+echo Obtaining DNS Server Address Automatically Enabled
+
+netsh interface ipv4 set dns "Ethernet" source=dhcp
 
 
 
@@ -340,15 +345,13 @@ echo Enabling DEP Protection
 
 bcdedit.exe /set {current} nx AlwaysOn
 
+echo Enabling User Account Control
 
+C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
 
+echo Obtaining DNS Server Address Automatically Enabled
 
-
-
-
-
-
-
+netsh interface ipv4 set dns "Ethernet" source=dhcp
 
 
 

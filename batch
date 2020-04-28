@@ -162,7 +162,8 @@ netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
 
 echo Enabling DEP Protection
 
-BCDEDIT /SET {CURRENT} NX ALWAYSON
+bcdedit.exe /set {current} nx AlwaysOn
+
 
 
 
@@ -331,7 +332,8 @@ netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
 
 echo Enabling DEP Protection
 
-BCDEDIT /SET {CURRENT} NX ALWAYSON
+bcdedit.exe /set {current} nx AlwaysOn
+
 
 
 
@@ -389,6 +391,6 @@ goto EndBatchScript
 
 :EndBatchScript
 
-echo Script Has Finished
+echo Script has finished. Restart may be necesary to see all changes.
 
 pause

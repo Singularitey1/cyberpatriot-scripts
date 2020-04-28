@@ -173,7 +173,13 @@ C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Micro
 
 echo Obtaining DNS Server Address Automatically Enabled
 
-netsh interface ipv4 set dns "Ethernet" source=dhcp
+netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp
+
+
+
+
+
+
 
 
 
@@ -351,7 +357,11 @@ C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Micro
 
 echo Obtaining DNS Server Address Automatically Enabled
 
-netsh interface ipv4 set dns "Ethernet" source=dhcp
+netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp
+
+
+
+
 
 
 

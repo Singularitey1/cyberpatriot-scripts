@@ -162,6 +162,10 @@ DISM /online /disable-feature /featurename:TFTP
 DISM /online /disable-feature /featurename:SNMP
 DISM /online /disable-feature /featurename:SMB
 
+echo Blocking All Microsoft Accounts
+
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
+
 echo Disabling Remote Assistance
 
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
@@ -171,9 +175,9 @@ echo Enabling DEP Protection
 
 bcdedit.exe /set {current} nx AlwaysOn
 
-echo Enabling User Account Control
+:: echo Enabling User Account Control
 
-C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
+:: C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
 
 echo Obtaining DNS Server Address Automatically Enabled
 
@@ -205,9 +209,9 @@ goto EndChangePassword1
 
 FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
 
-:EndChangePassword1
-
 echo Changed all passwords to "j273e4*KeH49kDW". Write it down.
+
+:EndChangePassword1
 
 choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows
@@ -359,9 +363,9 @@ echo Enabling DEP Protection
 
 bcdedit.exe /set {current} nx AlwaysOn
 
-echo Enabling User Account Control
+:: echo Enabling User Account Control
 
-C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
+:: C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
 
 echo Obtaining DNS Server Address Automatically Enabled
 
@@ -394,9 +398,9 @@ goto EndChangePassword1
 
 FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
 
-:EndChangePassword1
+echo Changed all passwords to "j273e4*KeH49kDW". Write it down.
 
-echo Changed All Passwords to j273e4*KeH49kDW
+:EndChangePassword1
 
 choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows

@@ -141,9 +141,9 @@ net start wuauserv
 
 echo Deleting Certain Media Files
 
-del /S /Q *.mp3
-del /S /Q *.mp4
-del /S /Q *.mov
+del /S /P *.mp3
+del /S /P *.mp4
+del /S /P *.mov
 
 echo Cleaning Host File
 
@@ -329,9 +329,9 @@ net start wuauserv
 
 echo Deleting Certain Media Files
 
-del /S /Q *.mp3
-del /S /Q *.mp4
-del /S /Q *.mov
+del /S /P *.mp3
+del /S /P *.mp4
+del /S /P *.mov
 
 echo Disable Sharing
 

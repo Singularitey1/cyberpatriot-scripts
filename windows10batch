@@ -90,7 +90,7 @@ netsh advfirewall set allprofiles state on
 
 echo Disabling Interactive Logon: Do not require ctrl+alt+delete
 
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon" /v DisableCAD /t REG_DWORD /d 0 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DisableCAD /t REG_DWORD /d 0 /f
 
 :: -------------------------------------------------lusrmgr Settings-------------------------------------------------
 

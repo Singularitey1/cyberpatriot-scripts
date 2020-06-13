@@ -93,10 +93,10 @@ netsh advfirewall set allprofiles state on
 echo Updating Default Accounts
 
 net user guest /active:no
-wmic useraccount where name='Guest' rename 'Potato'
+wmic useraccount where name='Guest' rename 'Subjects'
 
 net user Administrator /active:no
-wmic useraccount where name='Administrator' rename 'Tomato'
+wmic useraccount where name='Administrator' rename 'BobElMono'
 
 :: -------------------------------------------------Services-------------------------------------------------
 
@@ -217,4 +217,8 @@ start ms-settings:
 
 :EndUpdateWindows
 
+:: ---------------------------------------------------------End of Batch Script---------------------------------------------------------
 
+echo Script has finished. Restart may be necesary to see all changes.
+
+pause

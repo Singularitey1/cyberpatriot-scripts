@@ -86,6 +86,12 @@ echo Configuring Firewall
 
 netsh advfirewall set allprofiles state on
 
+::--------------------Security Policy--------------------
+
+echo Disabling Interactive Logon: Do not require ctrl+alt+delete
+
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft\WindowsNT\CurrentVersion\Winlogon" /v DisableCAD /t REG_DWORD /d 0 /f
+
 :: -------------------------------------------------lusrmgr Settings-------------------------------------------------
 
 :: --------------------Default Accounts--------------------
@@ -148,7 +154,7 @@ DISM /online /disable-feature /featurename:SMB
 
 echo Blocking All Microsoft Accounts
 
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v NoConnectedUser /t REG_DWORD /d 3 /f
 
 echo Disabling Remote Assistance
 

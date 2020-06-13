@@ -27,17 +27,7 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :--------------------------------------
 
-choice /m "Is This Windows Server? (check readme while using the script to make sure everything is ok)"
-if Errorlevel 2 goto NoWindowsServer
-if Errorlevel 1 goto YesWindowsServer
-
-:NoWindowsServer
-
-goto EndWindowsServer
-
 :: ---------------------------------------------------------Windows 10---------------------------------------------------------
-
-:EndWindowsServer
 
 :: -------------------------------------------------Local Security Policy-------------------------------------------------
 
@@ -222,11 +212,7 @@ start ms-settings:
 
 :EndUpdateWindows
 
-goto EndBatchScript
-
 :: ---------------------------------------------------------End of Batch Script---------------------------------------------------------
-
-:EndBatchScript
 
 echo Script has finished. Restart may be necesary to see all changes.
 

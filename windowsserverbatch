@@ -88,10 +88,10 @@ netsh advfirewall set allprofiles state on
 echo Updating Default Accounts
 
 net user guest /active:no
-wmic useraccount where name='Guest' rename 'Subjects'
+wmic useraccount where name='Guest' rename 'TestTwo'
 
 net user Administrator /active:no
-wmic useraccount where name='Administrator' rename 'BobElMono'
+wmic useraccount where name='Administrator' rename 'TestOne'
 
 :: -------------------------------------------------Services-------------------------------------------------
 

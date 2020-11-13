@@ -124,11 +124,11 @@ net start wuauserv
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
-echo Deleting Certain Media Files
+:: echo Deleting Certain Media Files
 
-del /S /P *.mp3
-del /S /P *.mp4
-del /S /P *.mov
+:: del /S /P *.mp3
+:: del /S /P *.mp4
+:: del /S /P *.mov
 
 echo Cleaning Host File
 

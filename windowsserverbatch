@@ -130,6 +130,9 @@ sc start Sense
 sc config msftpsvc start=disabled
 net stop msftpsvc
 
+sc config tlntsvr start=disabled
+net stop tlntsvr
+
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 0 /f
 sc config wuauserv start=auto
 net start wuauserv
@@ -158,6 +161,7 @@ DISM /online /disable-feature /featurename:TelnetServer
 DISM /online /disable-feature /featurename:TFTP
 DISM /online /disable-feature /featurename:SNMP
 DISM /online /disable-feature /featurename:SMB
+DISM /online /disable-feature /featurename:"SMB1Protocol"
 
 echo Blocking All Microsoft Accounts
 

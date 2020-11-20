@@ -1,1 +1,33 @@
+choice /m "Do you want to delete a user?"
+if Errorlevel 2 goto NoDeleteUser
+if Errorlevel 1 goto YesDeleteUser
 
+:YesDeleteUser
+
+wmic useraccount get name
+
+echo Below the word Name are all the users on the computer.
+echo Type all the users you want to delete, and check which users to delete by comparing it with the readme. 
+echo Type the usernames exactly as they appear in the list.
+echo Check the forensics questions or anything else to make sure they did not have anything you needed.
+
+goto :userCode
+
+:YesDeleteAnotherUser
+
+wmic useraccount get name
+
+echo Below the word Name is an updated list of the users.
+
+:userCode
+
+set /p User=Enter Username:
+
+net user %User% /delete
+
+choice /m "Do you want to delete another user?"
+if Errorlevel 2 goto NoDeleteAnotherUser
+if Errorlevel 1 goto YesDeleteAnotherUser
+
+:NoDeleteAnotherUser
+:NoDeleteUser

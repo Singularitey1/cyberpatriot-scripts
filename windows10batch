@@ -254,6 +254,6 @@ start ms-settings:
 
 :: ---------------------------------------------------------End of Batch Script---------------------------------------------------------
 
-echo Script has finished. Restart may be necesary to see all changes.
+echo Script has finished. Restart may be necesary to see all changes. Check settings because the script isn't perfect.
 
 pause

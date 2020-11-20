@@ -170,6 +170,7 @@ netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
 echo Enabling DEP Protection
 
 bcdedit.exe /set {current} nx AlwaysOn
+bcdedit.exe /set {current} nx optin
 
 :: echo Enabling User Account Control
 

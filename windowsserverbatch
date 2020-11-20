@@ -97,8 +97,16 @@ wmic useraccount where name='Administrator' rename 'TestOne'
 
 echo Updating Services
 
+choice /m "Disable World Wide Web Publishing Service (Check the ReadMe)?"
+if Errorlevel 2 goto NoDisablew3svc
+if Errorlevel 1 goto YesDisablew3svc
+
+:YesDisablew3svc
+
 sc config w3svc start=disabled
 sc stop w3svc
+
+:NoDisablew3svc
 
 sc config eventlog start=auto
 net start eventlog
@@ -117,6 +125,9 @@ net start WinDefend
 
 sc config Sense start=auto
 sc start Sense
+
+sc config msftpsvc start=disabled
+net stop msftpsvc
 
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 0 /f
 sc config wuauserv start=auto
@@ -186,17 +197,13 @@ choice /m "Change All User Passwords?"
 if Errorlevel 2 goto NoChangePassword1
 if Errorlevel 1 goto YesChangePassword1
 
-:NoChangePassword1
-
-goto EndChangePassword1
-
 :YesChangePassword1
 
 FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
 
 echo Changed all passwords to "j273e4*KeH49kDW". Write it down.
 
-:EndChangePassword1
+:NoChangePassword1
 
 choice /m "Do you want to delete a user?"
 if Errorlevel 2 goto NoDeleteUser
@@ -236,15 +243,11 @@ choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows
 if Errorlevel 1 goto YesUpdateWindows
 
-:NoUpdateWindows
-
-goto EndUpdateWindows
-
 :YesUpdateWindows
 
 start ms-settings:
 
-:EndUpdateWindows
+:NoUpdateWindows
 
 :: ---------------------------------------------------------End of Batch Script---------------------------------------------------------
 

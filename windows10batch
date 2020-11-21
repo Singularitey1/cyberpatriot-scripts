@@ -40,6 +40,8 @@ net accounts /minpwlen:14
 net accounts /maxpwage:90
 net accounts /minpwage:10
 
+powershell -ExecutionPolicy Bypass -Command "Set-ADAccountControl -Identity user01 -AllowReversiblePasswordEncryption $false"
+
 echo Exporting and updating Password Security Policy settings...
 
 secedit.exe /export /cfg C:\secconfig.cfg

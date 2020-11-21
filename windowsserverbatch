@@ -142,11 +142,15 @@ net start wuauserv
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
-:: echo Deleting Certain Media Files
+echo Deleting Certain Media Files
+echo Do not delete them if you need them for something else, like a forensics question.
+echo You need to disable controlled folder access for this to work, but then reenable it after.
 
-:: del /S /P *.mp3
-:: del /S /P *.mp4
-:: del /S /P *.mov
+del /S /P *.mp3
+del /S /P *.mp4
+del /S /P *.mov
+del /S /P *.txt
+del /S /P *.exe
 
 echo Cleaning Host File
 

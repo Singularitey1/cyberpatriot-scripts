@@ -132,6 +132,7 @@ net start wuauserv
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
 echo Deleting Certain Media Files
+echo It gives you the folder path and name of the file.
 echo Do not delete them if you need them for something else, like a forensics question.
 echo You need to disable controlled folder access for this to work, but then reenable it after.
 

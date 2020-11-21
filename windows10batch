@@ -43,20 +43,30 @@ net accounts /minpwage:10
 echo Exporting and updating Password Security Policy settings...
 
 secedit.exe /export /cfg C:\secconfig.cfg
-
 powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'PasswordComplexity = 0', 'PasswordComplexity = 1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
-powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'DontDisplayLastUserName=4,0', 'DontDisplayLastUserName=4,1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
-powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'LimitBlankPasswordUse=4,0', 'LimitBlankPasswordUse=4,1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
-
-echo Password Security Policy updates completed...
 echo Importing Password Security Policy Settings...
-
 secedit.exe /configure /db %windir%\securitynew.sdb /cfg C:\secconfigupdated.cfg /areas SECURITYPOLICY
-
 echo Import successful...
-
 del c:\secconfig.cfg
 del c:\secconfigupdated.cfg
+
+secedit.exe /export /cfg C:\secconfig.cfg
+powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'DontDisplayLastUserName=4,0', 'DontDisplayLastUserName=4,1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
+echo Importing Password Security Policy Settings...
+secedit.exe /configure /db %windir%\securitynew.sdb /cfg C:\secconfigupdated.cfg /areas SECURITYPOLICY
+echo Import successful...
+del c:\secconfig.cfg
+del c:\secconfigupdated.cfg
+
+secedit.exe /export /cfg C:\secconfig.cfg
+powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'LimitBlankPasswordUse=4,0', 'LimitBlankPasswordUse=4,1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
+echo Importing Password Security Policy Settings...
+secedit.exe /configure /db %windir%\securitynew.sdb /cfg C:\secconfigupdated.cfg /areas SECURITYPOLICY
+echo Import successful...
+del c:\secconfig.cfg
+del c:\secconfigupdated.cfg
+
+echo Password Security Policy updates completed...
 
 :: --------------------Lockout Policy--------------------
 

@@ -40,6 +40,7 @@ powershell -ExecutionPolicy Bypass -Command "Set-ADAccountControl -Identity user
 
 echo Exporting and updating Password Security Policy settings...
 
+echo Password Complexity
 secedit.exe /export /cfg C:\secconfig.cfg
 powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'PasswordComplexity = 0', 'PasswordComplexity = 1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
 echo Importing Updated Password Security Policy Settings, Will be Deleted...
@@ -48,6 +49,7 @@ echo Import successful...
 del c:\secconfig.cfg
 del c:\secconfigupdated.cfg
 
+echo Don't Display Last Username
 secedit.exe /export /cfg C:\secconfig.cfg
 powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'DontDisplayLastUserName=4,0', 'DontDisplayLastUserName=4,1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
 echo Importing Updated Password Security Policy Settings, Will be Deleted...
@@ -56,6 +58,7 @@ echo Import successful...
 del c:\secconfig.cfg
 del c:\secconfigupdated.cfg
 
+echo Limit Blank Password Use to Console Only
 secedit.exe /export /cfg C:\secconfig.cfg
 powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'LimitBlankPasswordUse=4,0', 'LimitBlankPasswordUse=4,1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
 echo Importing Updated Password Security Policy Settings, Will be Deleted...

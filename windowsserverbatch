@@ -164,11 +164,14 @@ net share C:\ /delete
 
 echo Disabling Certain Features
 
+echo Disabling Telnet Client
 DISM /online /disable-feature /featurename:TelnetClient
-DISM /online /disable-feature /featurename:TelnetServer
+echo Disabling TFTP
 DISM /online /disable-feature /featurename:TFTP
+echo Disabling SNMP
 DISM /online /disable-feature /featurename:SNMP
-DISM /online /disable-feature /featurename:SMB1Protocol
+echo Disabling SMBv1
+powershell -ExecutionPolicy Bypass -Command "Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol"
 
 echo Blocking All Microsoft Accounts
 

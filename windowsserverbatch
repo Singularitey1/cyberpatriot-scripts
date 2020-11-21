@@ -191,9 +191,16 @@ echo Disabling Remote Assistance
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
 netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
 
+choice /m "Enable DEP for everything (Recommended)?"
+if Errorlevel 2 goto NoDEP
+if Errorlevel 1 goto YesDEP
+:YesDEP
 echo Enabling DEP Protection
 bcdedit.exe /set {current} nx AlwaysOn
+goto EndDEP
+:NoDEP
 bcdedit.exe /set {current} nx optin
+:EndDEP
 
 :: echo Enabling User Account Control
 :: C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f

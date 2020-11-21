@@ -154,10 +154,9 @@ break > %WinDir%\System32\drivers\etc\hosts
 echo Disabling Certain Features
 
 DISM /online /disable-feature /featurename:TelnetClient
-DISM /online /disable-feature /featurename:TelnetServer
 DISM /online /disable-feature /featurename:TFTP
 DISM /online /disable-feature /featurename:SNMP
-DISM /online /disable-feature /featurename:SMB
+DISM /online /disable-feature /featurename:SMB1Protocol
 
 echo Blocking All Microsoft Accounts
 

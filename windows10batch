@@ -121,6 +121,22 @@ wmic useraccount where name='Administrator' rename 'TestOne'
 
 echo Updating Services
 
+choice /m "Start Sense service (computer most likely doesn't have it)?"
+if Errorlevel 2 goto NoStartSense
+if Errorlevel 1 goto YesStartSense
+:YesStartSense
+sc config Sense start=auto
+sc start Sense
+:NoStartSense
+
+choice /m "Disable Telnet service (if Telnet isn't installed then the computer doesn't have this service)?"
+if Errorlevel 2 goto NoDisableTelnetService
+if Errorlevel 1 goto YesDisableTelnetService
+:YesDisableTelnetService
+sc config tlntsvr start=disabled
+net stop tlntsvr
+:NoDisableTelnetService
+
 net stop TermService
 sc config "TermService" start=disabled
 
@@ -132,9 +148,6 @@ sc config "UmRdpService" start= disabled
 
 sc config WinDefend start=auto
 net start WinDefend
-
-sc config Sense start=auto
-sc start Sense
 
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 0 /f
 sc config wuauserv start=auto
@@ -193,7 +206,6 @@ Rem C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\M
 
 echo Obtaining DNS Server Address Automatically Enabled
 netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp
-
 
 
 

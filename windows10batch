@@ -48,6 +48,15 @@ echo Import successful...
 del c:\secconfig.cfg
 del c:\secconfigupdated.cfg
 
+echo Password Stored Using Reversible Encryption
+secedit.exe /export /cfg C:\secconfig.cfg
+powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'ClearTextPassword = 1', 'ClearTextPassword = 0' | Out-File -encoding ASCII C:\secconfigupdated.cfg"
+echo Importing Updated Password Security Policy Settings, Will be Deleted...
+secedit.exe /configure /db %windir%\securitynew.sdb /cfg C:\secconfigupdated.cfg /areas SECURITYPOLICY
+echo Import successful...
+del c:\secconfig.cfg
+del c:\secconfigupdated.cfg
+
 echo Don't Display Last Username
 secedit.exe /export /cfg C:\secconfig.cfg
 powershell -ExecutionPolicy Bypass -Command "(gc C:\secconfig.cfg) -replace 'DontDisplayLastUserName=4,0', 'DontDisplayLastUserName=4,1' | Out-File -encoding ASCII C:\secconfigupdated.cfg"

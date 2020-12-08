@@ -215,7 +215,7 @@ echo Disabling Remote Assistance
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
 netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
 
-choice /m "Enable DEP for everything (Recommended)?"
+choice /m "Enable DEP for everything, you would need to restart (Recommended)?"
 if Errorlevel 2 goto NoDEP
 if Errorlevel 1 goto YesDEP
 :YesDEP

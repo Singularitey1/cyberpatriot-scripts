@@ -196,10 +196,16 @@ echo Disabling Telnet Client
 DISM /online /disable-feature /featurename:TelnetClient
 echo Disabling TFTP
 DISM /online /disable-feature /featurename:TFTP
-echo Disabling SNMP
-DISM /online /disable-feature /featurename:SNMP
 echo Disabling SMBv1
 powershell -ExecutionPolicy Bypass -Command "Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol"
+
+choice /m "Disable SNMP feature (might not be there)?"
+if Errorlevel 2 goto NoDisableSNMP
+if Errorlevel 1 goto YesDisableSNMP
+:YesDisableSNMP
+echo Disabling SNMP
+DISM /online /disable-feature /featurename:SNMP
+:NoDisableSNMP
 
 echo Blocking All Microsoft Accounts
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f

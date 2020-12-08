@@ -180,9 +180,6 @@ DISM /online /disable-feature /featurename:TFTP
 echo Disabling SMBv1
 powershell -ExecutionPolicy Bypass -Command "Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol"
 
-Rem echo Disabling SNMP
-Rem DISM /online /disable-feature /featurename:SNMP
-
 echo Blocking All Microsoft Accounts
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v NoConnectedUser /t REG_DWORD /d 3 /f
 
@@ -190,7 +187,7 @@ echo Disabling Remote Assistance
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
 netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
 
-choice /m "Enable DEP for everything, you need to restart (Recommended)?"
+choice /m "Enable DEP for everything, you would need to restart (Recommended)?"
 if Errorlevel 2 goto NoDEP
 if Errorlevel 1 goto YesDEP
 :YesDEP

@@ -117,6 +117,38 @@ wmic useraccount where name='Guest' rename 'TestTwo'
 net user Administrator /active:no
 wmic useraccount where name='Administrator' rename 'TestOne'
 
+choice /m "Change All User Passwords?"
+if Errorlevel 2 goto NoChangePassword1
+if Errorlevel 1 goto YesChangePassword1
+:NoChangePassword1
+goto EndChangePassword1
+:YesChangePassword1
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F T3amH@ck3r0ne!!)
+echo Changed all passwords to "j273e4*KeH49kDW". Write it down.
+:EndChangePassword1
+
+choice /m "Do you want to delete a user?"
+if Errorlevel 2 goto NoDeleteUser
+if Errorlevel 1 goto YesDeleteUser
+:YesDeleteUser
+wmic useraccount get name
+echo Below the word Name are all the users on the computer.
+echo Type all the users you want to delete, and check which users to delete by comparing it with the readme. 
+echo Type the usernames exactly as they appear in the list.
+echo Check the forensics questions or anything else to make sure they did not have anything you needed.
+goto :userCode
+:YesDeleteAnotherUser
+wmic useraccount get name
+echo Below the word Name is an updated list of the users.
+:userCode
+set /p User=Enter Username:
+net user %User% /delete
+choice /m "Do you want to delete another user?"
+if Errorlevel 2 goto NoDeleteAnotherUser
+if Errorlevel 1 goto YesDeleteAnotherUser
+:NoDeleteAnotherUser
+:NoDeleteUser
+
 :: -------------------------------------------------Services-------------------------------------------------
 
 echo Updating Services
@@ -226,38 +258,6 @@ netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp
 
 
 :: -------------------------------------------------Windows Settings-------------------------------------------------
-
-choice /m "Change All User Passwords?"
-if Errorlevel 2 goto NoChangePassword1
-if Errorlevel 1 goto YesChangePassword1
-:NoChangePassword1
-goto EndChangePassword1
-:YesChangePassword1
-FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F T3amH@ck3r0ne!!)
-echo Changed all passwords to "j273e4*KeH49kDW". Write it down.
-:EndChangePassword1
-
-choice /m "Do you want to delete a user?"
-if Errorlevel 2 goto NoDeleteUser
-if Errorlevel 1 goto YesDeleteUser
-:YesDeleteUser
-wmic useraccount get name
-echo Below the word Name are all the users on the computer.
-echo Type all the users you want to delete, and check which users to delete by comparing it with the readme. 
-echo Type the usernames exactly as they appear in the list.
-echo Check the forensics questions or anything else to make sure they did not have anything you needed.
-goto :userCode
-:YesDeleteAnotherUser
-wmic useraccount get name
-echo Below the word Name is an updated list of the users.
-:userCode
-set /p User=Enter Username:
-net user %User% /delete
-choice /m "Do you want to delete another user?"
-if Errorlevel 2 goto NoDeleteAnotherUser
-if Errorlevel 1 goto YesDeleteAnotherUser
-:NoDeleteAnotherUser
-:NoDeleteUser
 
 choice /m "Update Windows?"
 if Errorlevel 2 goto NoUpdateWindows

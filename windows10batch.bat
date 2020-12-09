@@ -117,6 +117,8 @@ wmic useraccount where name='Guest' rename 'TestTwo'
 net user Administrator /active:no
 wmic useraccount where name='Administrator' rename 'TestOne'
 
+:: --------------------User Settings--------------------
+
 choice /m "Change All User Passwords?"
 if Errorlevel 2 goto NoChangePassword1
 if Errorlevel 1 goto YesChangePassword1

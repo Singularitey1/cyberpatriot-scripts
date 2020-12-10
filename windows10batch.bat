@@ -171,6 +171,9 @@ sc config tlntsvr start=disabled
 net stop tlntsvr
 :NoDisableTelnetService
 
+sc config eventlog start=auto
+net start eventlog
+
 net stop TermService
 sc config "TermService" start=disabled
 

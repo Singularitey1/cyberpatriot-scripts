@@ -126,7 +126,7 @@ if Errorlevel 1 goto YesChangePassword1
 goto EndChangePassword1
 :YesChangePassword1
 FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (NET USER %%F T3amH@ck3r0ne!!)
-echo Changed all passwords to "j273e4*KeH49kDW". Write it down.
+echo Changed all passwords to "T3amH@ck3r0ne!!". Write it down.
 :EndChangePassword1
 
 choice /m "Do you want to delete a user?"

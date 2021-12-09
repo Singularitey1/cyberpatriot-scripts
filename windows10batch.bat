@@ -109,14 +109,6 @@ Rem reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Win
 
 :: -------------------------------------------------lusrmgr Settings-------------------------------------------------
 
-:: --------------------Default Accounts--------------------
-
-echo Updating Default Accounts
-net user guest /active:no
-wmic useraccount where name='Guest' rename 'TestTwo'
-net user Administrator /active:no
-wmic useraccount where name='Administrator' rename 'TestOne'
-
 :: --------------------User Settings--------------------
 
 choice /m "Change All User Passwords?"
@@ -134,7 +126,7 @@ if Errorlevel 2 goto NoDeleteUser
 if Errorlevel 1 goto YesDeleteUser
 :YesDeleteUser
 wmic useraccount get name
-echo Below the word Name are all the users on the computer.
+echo Below the word Name are all the users on the computer. Don't delete administrator or guest
 echo Type all the users you want to delete, and check which users to delete by comparing it with the readme. 
 echo Type the usernames exactly as they appear in the list.
 echo Check the forensics questions or anything else to make sure they did not have anything you needed.
@@ -150,6 +142,18 @@ if Errorlevel 2 goto NoDeleteAnotherUser
 if Errorlevel 1 goto YesDeleteAnotherUser
 :NoDeleteAnotherUser
 :NoDeleteUser
+
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (net user %%F /PasswordChg:Yes)
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (WMIC USERACCOUNT WHERE Name='%%F' SET PasswordExpires=TRUE)
+FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (Echo "%%F" | FIND /I "Administrator" 1>NUL) || (Echo "%%F" | FIND /I "Guest" 1>NUL) || (Net user %%F /active:yes)
+
+:: --------------------Default Accounts--------------------
+
+echo Updating Default Accounts
+net user guest /active:no
+wmic useraccount where name='Guest' rename 'TestTwo'
+net user Administrator /active:no
+wmic useraccount where name='Administrator' rename 'TestOne'
 
 :: -------------------------------------------------Services-------------------------------------------------
 

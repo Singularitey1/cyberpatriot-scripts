@@ -179,28 +179,106 @@ echo Updating Services
 
 sc config Sense start=auto
 sc start Sense
-
 sc config tlntsvr start=disabled
 net stop tlntsvr
-
 sc config eventlog start=auto
 net start eventlog
-
 net stop TermService
 sc config "TermService" start=disabled
-
 net stop RemoteRegistry
 sc config "RemoteRegistry" start=disabled
-
 sc stop UmRdpService
 sc config "UmRdpService" start= disabled
-
 sc config WinDefend start=auto
 net start WinDefend
-
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 0 /f
 sc config wuauserv start=auto
 net start wuauserv
+sc stop BTAGService
+sc stop bthserv
+sc config BTAGService start= disabled
+sc config bthserv start= disabled
+sc stop MapsBroker
+sc config MapsBroker start= disabled
+sc stop lfsvc
+sc config lfsvc start= disabled
+sc stop IISADMIN
+sc config IISADMIN start= disabled
+sc stop irmon
+sc config irmon start= disabled
+sc stop SharedAccess
+sc config "SharedAccess" start= disabled
+sc stop lltdsvc
+sc config lltdsvc start= disabled
+sc stop LxssManager
+sc config LxssManager start= disabled
+sc stop FTPSVC
+sc config FTPSVC start= disabled
+sc stop MSiSCSI
+sc config MSiSCSI start= disabled
+sc stop InstallService
+sc config InstallService start= disabled
+sc stop sshd
+sc config sshd start= disabled
+sc stop PNRPsvc
+sc config PNRPsvc start= disabled
+sc stop p2psvc
+sc config p2psvc start= disabled
+sc stop p2pimsvc
+sc config p2pimsvc start= disabled
+sc stop PNRPAutoReg
+sc config PNRPAutoReg start= disabled
+sc stop wercplsupport
+sc config wercplsupport start= disabled
+sc stop RasAuto
+sc config RasAuto start= disabled
+sc stop SessionEnv
+sc config SessionEnv start= disabled
+REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 1 /f
+sc stop RpcLocator
+sc config RpcLocator start= disabled
+sc stop RemoteAccess
+sc config RemoteAccess start= disabled
+sc stop LanmanServer
+sc config LanmanServer start= disabled
+sc stop simptcp
+sc config simptcp start= disabled
+sc stop SNMP
+sc config SNMP start= disabled
+sc stop SSDPSRV
+sc config "SSDPSRV" start= disabled
+sc stop upnphost
+sc config "upnphost" start= disabled
+sc stop WMSvc
+sc config WMSvc start= disabled
+sc stop WerSvc
+sc config WerSvc start= disabled
+sc stop Wecsvc
+sc config Wecsvc start= disabled
+sc stop WMPNetworkSvc
+sc config WMPNetworkSvc start= disabled
+sc stop icssvc
+sc config icssvc start= disabled
+sc stop WpnService
+sc config WpnService start= disabled
+sc stop PushToInstall
+sc config PushToInstall start= disabled
+sc stop WinRM
+sc config WinRM start= disabled
+sc stop XboxGipSvc
+sc config XboxGipSvc start= disabled
+sc stop XblAuthManager
+sc config XblAuthManager start= disabled
+sc stop XblGameSave
+sc config XblGameSave start= disabled
+sc stop XboxNetApiSvc
+sc config XboxNetApiSvc start= disabled
+sc stop Spooler
+sc config Spooler start= disabled
+sc stop NetTcpPortSharing
+sc config NetTcpPortSharing start= disabled
+sc stop WebClient
+sc config WebClient start= disabled
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 

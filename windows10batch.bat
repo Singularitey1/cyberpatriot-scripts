@@ -317,6 +317,9 @@ goto EndShares
 compmgmt.msc
 :EndShares
 
+echo Lanman Server Disabled
+REG ADD HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters /v AutoShareWks /t REG_DWORD /d 0 /f
+
 echo Cleaning Host File
 copy %WinDir%\System32\drivers\etc\hosts %WinDir%\System32\drivers\etc\hosts.old
 break > %WinDir%\System32\drivers\etc\hosts

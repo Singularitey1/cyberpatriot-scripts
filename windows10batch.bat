@@ -336,18 +336,27 @@ netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp
 
 :: -------------------------------------------------Windows Settings-------------------------------------------------
 
+choice /m "Look through windows settings (look everywhere for any security settings you can find like exploit protection, controlled file access)?"
+if Errorlevel 2 goto NoSettings
+if Errorlevel 1 goto YesSettings
+:NoSettings
+goto EndSettings
+:YesSettings
+start ms-settings:
+:EndSettings
+
 choice /m "Update Windows (Recommend doing it early)?"
 if Errorlevel 2 goto NoUpdateWindows
 if Errorlevel 1 goto YesUpdateWindows
 :NoUpdateWindows
 goto EndUpdateWindows
 :YesUpdateWindows
-ms-settings:windowsupdate
-start ms-settings:
+start ms-settings:windowsupdate
 :EndUpdateWindows
 
 :: ---------------------------------------------------------End of Batch Script---------------------------------------------------------
 
 echo Script has finished. Restart may be necesary to see all changes. Check settings because the script isn't perfect.
+echo Run the other scripts, vector shield, and GPOs
 
 pause

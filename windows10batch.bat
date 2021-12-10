@@ -282,19 +282,19 @@ sc config WebClient start= disabled
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
-REM echo Deleting Certain Media Files
-REM echo It gives you the folder path and name of the file.
-REM echo Do not delete them if you need them for something else, like a forensics question.
-REM echo Do not delete anything that looks like it is part of the system.
-REM echo You need to disable controlled folder access if you have it for this to work, but then reenable it after.
-REM del "C:\Users\*.mp3" /s /p /a:-s
-REM del "C:\Users\*.mp4" /s /p /a:-s
-REM del "C:\Users\*.mov" /s /p /a:-s
-REM del "C:\Users\*.txt" /s /p /a:-s
-REM del "C:\Users\*.exe" /s /p /a:-s
+echo Look for media files or suspicious files, make sure they aren't required for forensics or readme (search these in c: drive: *.exe, *.mp3, *.mp4, *.mov, *.txt, *.csv, *.zip, *.png, *.jpg, *.jpeg, *.pdf, *.bat, *.ps1)
+pause
 
 echo Disable Sharing
 net share C:\ /delete
+choice /m "Finish looking at shares? Check each share and make sure it's good if you don't want to remove it. If you don't know then remove it"
+if Errorlevel 2 goto NoShares
+if Errorlevel 1 goto YesShares
+:NoShares
+goto EndShares
+:YesShares
+compmgmt.msc
+:EndShares
 
 echo Cleaning Host File
 copy %WinDir%\System32\drivers\etc\hosts %WinDir%\System32\drivers\etc\hosts.old

@@ -107,6 +107,15 @@ netsh advfirewall set allprofiles state on
 Rem echo Disabling Interactive Logon: Do not require ctrl+alt+delete
 Rem reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v DisableCAD /t REG_DWORD /d 0 /f
 
+choice /m "Check secpol settings (go thru checklist)? Check to see what is enabled and disabled before you change anything"
+if Errorlevel 2 goto NoSecpol
+if Errorlevel 1 goto YesSecpol
+:NoSecpol
+goto EndSecpol
+:YesSecpol
+secpol.msc
+:EndSecpol
+
 :: -------------------------------------------------lusrmgr Settings-------------------------------------------------
 
 :: --------------------User Settings--------------------
@@ -147,6 +156,15 @@ FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NU
 FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (WMIC USERACCOUNT WHERE Name='%%F' SET PasswordExpires=TRUE)
 FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (Echo "%%F" | FIND /I "Administrator" 1>NUL) || (Echo "%%F" | FIND /I "Guest" 1>NUL) || (Net user %%F /active:yes)
 
+choice /m "Finish sorting users into groups? Read the readme to check which users are administrators and users"
+if Errorlevel 2 goto NoLusrmgr
+if Errorlevel 1 goto YesLusrmgr
+:NoLusrmgr
+goto EndLusrmgr
+:YesLusrmgr
+lusrmgr.msc
+:EndLusrmgr
+
 :: --------------------Default Accounts--------------------
 
 echo Updating Default Accounts
@@ -159,21 +177,11 @@ wmic useraccount where name='Administrator' rename 'TestOne'
 
 echo Updating Services
 
-choice /m "Start Sense service (computer most likely doesn't have it)?"
-if Errorlevel 2 goto NoStartSense
-if Errorlevel 1 goto YesStartSense
-:YesStartSense
 sc config Sense start=auto
 sc start Sense
-:NoStartSense
 
-choice /m "Disable Telnet service (if Telnet isn't installed then the computer doesn't have this service)?"
-if Errorlevel 2 goto NoDisableTelnetService
-if Errorlevel 1 goto YesDisableTelnetService
-:YesDisableTelnetService
 sc config tlntsvr start=disabled
 net stop tlntsvr
-:NoDisableTelnetService
 
 sc config eventlog start=auto
 net start eventlog
@@ -221,14 +229,8 @@ echo Disabling TFTP
 DISM /online /disable-feature /featurename:TFTP
 echo Disabling SMBv1
 powershell -ExecutionPolicy Bypass -Command "Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol"
-
-choice /m "Disable SNMP feature (might not be there)?"
-if Errorlevel 2 goto NoDisableSNMP
-if Errorlevel 1 goto YesDisableSNMP
-:YesDisableSNMP
 echo Disabling SNMP
 DISM /online /disable-feature /featurename:SNMP
-:NoDisableSNMP
 
 echo Blocking All Microsoft Accounts
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v NoConnectedUser /t REG_DWORD /d 3 /f
@@ -253,18 +255,6 @@ Rem C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\M
 
 echo Obtaining DNS Server Address Automatically Enabled
 netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp
-
-
-
-
-
-
-
-
-
-
-
-
 
 :: -------------------------------------------------Windows Settings-------------------------------------------------
 

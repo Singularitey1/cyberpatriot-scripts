@@ -328,8 +328,8 @@ goto EndDEP
 bcdedit.exe /set {current} nx optin
 :EndDEP
 
-Rem echo Enabling User Account Control
-Rem C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
+echo Enabling User Account Control
+C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
 
 echo Obtaining DNS Server Address Automatically Enabled
 netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp

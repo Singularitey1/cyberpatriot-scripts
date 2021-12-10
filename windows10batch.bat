@@ -336,12 +336,13 @@ netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp
 
 :: -------------------------------------------------Windows Settings-------------------------------------------------
 
-choice /m "Update Windows?"
+choice /m "Update Windows (Recommend doing it early)?"
 if Errorlevel 2 goto NoUpdateWindows
 if Errorlevel 1 goto YesUpdateWindows
 :NoUpdateWindows
 goto EndUpdateWindows
 :YesUpdateWindows
+ms-settings:windowsupdate
 start ms-settings:
 :EndUpdateWindows
 

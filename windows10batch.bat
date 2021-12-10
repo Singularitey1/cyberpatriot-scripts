@@ -336,6 +336,9 @@ netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp
 
 :: -------------------------------------------------Windows Settings-------------------------------------------------
 
+powershell -ExecutionPolicy Bypass -Command "
+powershell -ExecutionPolicy Bypass -Command "
+
 choice /m "Look through windows settings (look everywhere for any security settings you can find like exploit protection, controlled file access)?"
 if Errorlevel 2 goto NoSettings
 if Errorlevel 1 goto YesSettings

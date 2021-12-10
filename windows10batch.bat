@@ -34,7 +34,7 @@ if Errorlevel 1 goto YesAddPolicy
 :NoAddPolicy
 goto EndAddPolicy
 :YesAddPolicy
-choice /m "Are you sure?"
+choice /m "Are you sure (restart would be required)?"
 if Errorlevel 2 goto NoAddPolicy2
 if Errorlevel 1 goto YesAddPolicy2
 :NoAddPolicy2
@@ -185,7 +185,7 @@ wmic useraccount where name='Guest' rename 'TestTwo'
 net user Administrator /active:no
 wmic useraccount where name='Administrator' rename 'TestOne'
 
-choice /m "Finish sorting users into groups? Read the readme to check which users are administrators and users"
+choice /m "Finish sorting users into groups? Read the readme to check which users are administrators and users, check groups like remote users or custom groups"
 if Errorlevel 2 goto NoLusrmgr
 if Errorlevel 1 goto YesLusrmgr
 :NoLusrmgr
@@ -303,6 +303,15 @@ sc config WebClient start= disabled
 sc stop iphlpsvc
 sc config iphlpsvc start= disabled
 
+choice /m "Check services (go thru checklist)? Check for things like infrared and remote connections"
+if Errorlevel 2 goto NoServices
+if Errorlevel 1 goto YesServices
+:NoServices
+goto EndServices
+:YesServices
+services.msc
+:EndServices
+
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
 echo Look for media files or suspicious files, make sure they aren't required for forensics or readme (search these in c: drive: *.exe, *.mp3, *.mp4, *.mov, *.txt, *.csv, *.zip, *.png, *.jpg, *.jpeg, *.pdf, *.bat, *.ps1)
@@ -332,6 +341,8 @@ echo Disabling SMBv1
 powershell -ExecutionPolicy Bypass -Command "Disable-WindowsOptionalFeature -Online -FeatureName smb1protocol"
 echo Disabling SNMP
 DISM /online /disable-feature /featurename:SNMP
+echo Go to windows features and disable anything that looks unnecessary such as printing (ldp print server, smbv1 (make sure smbv3 is enabled), telnet, search up everything that is enabled)
+pause
 
 choice /m "Enable DEP for everything, you would need to restart after the script finishes (Recommended)?"
 if Errorlevel 2 goto NoDEP

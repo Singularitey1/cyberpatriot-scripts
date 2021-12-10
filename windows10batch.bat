@@ -366,7 +366,7 @@ echo Lanman Server Disabled
 REG ADD HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters /v AutoShareWks /t REG_DWORD /d 0 /f
 
 echo Enabling User Account Control
-C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
+REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
 
 echo Open secpol and configure: secpol -> Security Options -> “Microsoft Network Client: Send unencrypted password to connect to third-party SMB servers” to “Disabled”
 pause

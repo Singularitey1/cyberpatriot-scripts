@@ -26,6 +26,27 @@ if '%errorlevel%' NEQ '0' (
 
 :: ---------------------------------------------------------Windows 10---------------------------------------------------------
 
+echo If group policy/secpol is disabled or not available, say yes, if not then ignore and say no
+pause
+choice /m "Are gpedit.msc and secpol disabled or not available? Say no if they are available"
+if Errorlevel 2 goto NoAddPolicy
+if Errorlevel 1 goto YesAddPolicy
+:NoAddPolicy
+goto EndAddPolicy
+:YesAddPolicy
+choice /m "Are you sure?"
+if Errorlevel 2 goto NoAddPolicy2
+if Errorlevel 1 goto YesAddPolicy2
+:NoAddPolicy2
+goto EndAddPolicy2
+:YesAddPolicy2
+:: ----
+FOR %F IN ("%SystemRoot%\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientTools-Package~*.mum") DO (DISM /Online /NoRestart /Add-Package:"%F")
+FOR %F IN ("%SystemRoot%\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientExtensions-Package~*.mum") DO (DISM /Online /NoRestart /Add-Package:"%F")
+:: ----
+:EndAddPolicy2
+:EndAddPolicy
+
 :: -------------------------------------------------Local Security Policy-------------------------------------------------
 
 :: --------------------Password and Logon Policy--------------------

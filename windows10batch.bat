@@ -156,6 +156,14 @@ FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NU
 FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (WMIC USERACCOUNT WHERE Name='%%F' SET PasswordExpires=TRUE)
 FOR /F %%F IN ('wmic useraccount get name') DO (Echo "%%F" | FIND /I "Name" 1>NUL) || (Echo "%%F" | FIND /I "DefaultAccount" 1>NUL) || (Echo "%%F" | FIND /I "Administrator" 1>NUL) || (Echo "%%F" | FIND /I "Guest" 1>NUL) || (Net user %%F /active:yes)
 
+:: --------------------Default Accounts--------------------
+
+echo Updating Default Accounts
+net user guest /active:no
+wmic useraccount where name='Guest' rename 'TestTwo'
+net user Administrator /active:no
+wmic useraccount where name='Administrator' rename 'TestOne'
+
 choice /m "Finish sorting users into groups? Read the readme to check which users are administrators and users"
 if Errorlevel 2 goto NoLusrmgr
 if Errorlevel 1 goto YesLusrmgr
@@ -164,14 +172,6 @@ goto EndLusrmgr
 :YesLusrmgr
 lusrmgr.msc
 :EndLusrmgr
-
-:: --------------------Default Accounts--------------------
-
-echo Updating Default Accounts
-net user guest /active:no
-wmic useraccount where name='Guest' rename 'TestTwo'
-net user Administrator /active:no
-wmic useraccount where name='Administrator' rename 'TestOne'
 
 :: -------------------------------------------------Services-------------------------------------------------
 

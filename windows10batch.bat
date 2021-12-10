@@ -300,13 +300,15 @@ sc stop NetTcpPortSharing
 sc config NetTcpPortSharing start= disabled
 sc stop WebClient
 sc config WebClient start= disabled
+sc stop iphlpsvc
+sc config iphlpsvc start= disabled
 
 :: -------------------------------------------------Other Settings-------------------------------------------------
 
 echo Look for media files or suspicious files, make sure they aren't required for forensics or readme (search these in c: drive: *.exe, *.mp3, *.mp4, *.mov, *.txt, *.csv, *.zip, *.png, *.jpg, *.jpeg, *.pdf, *.bat, *.ps1)
 pause
 
-echo Disable Sharing
+echo Disable Sharing of C: Drive
 net share C:\ /delete
 choice /m "Finish looking at shares? Check each share and make sure it's good if you don't want to remove it. If you don't know then remove it"
 if Errorlevel 2 goto NoShares
@@ -316,9 +318,6 @@ goto EndShares
 :YesShares
 compmgmt.msc
 :EndShares
-
-echo Lanman Server Disabled
-REG ADD HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters /v AutoShareWks /t REG_DWORD /d 0 /f
 
 echo Cleaning Host File
 copy %WinDir%\System32\drivers\etc\hosts %WinDir%\System32\drivers\etc\hosts.old
@@ -334,14 +333,7 @@ powershell -ExecutionPolicy Bypass -Command "Disable-WindowsOptionalFeature -Onl
 echo Disabling SNMP
 DISM /online /disable-feature /featurename:SNMP
 
-echo Blocking All Microsoft Accounts
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v NoConnectedUser /t REG_DWORD /d 3 /f
-
-echo Disabling Remote Assistance
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
-netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
-
-choice /m "Enable DEP for everything, you would need to restart (Recommended)?"
+choice /m "Enable DEP for everything, you would need to restart after the script finishes (Recommended)?"
 if Errorlevel 2 goto NoDEP
 if Errorlevel 1 goto YesDEP
 :YesDEP
@@ -352,8 +344,21 @@ goto EndDEP
 bcdedit.exe /set {current} nx optin
 :EndDEP
 
+echo Blocking All Microsoft Accounts
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v NoConnectedUser /t REG_DWORD /d 3 /f
+
+echo Disabling Remote Assistance
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" /v fAllowToGetHelp /t REG_DWORD /d 0 /f
+netsh advfirewall firewall set rule group="Remote Assistance" new enable=no
+
+echo Lanman Server Disabled
+REG ADD HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters /v AutoShareWks /t REG_DWORD /d 0 /f
+
 echo Enabling User Account Control
 C:\Windows\System32\cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 1 /f
+
+echo Open secpol and configure: secpol -> Security Options -> “Microsoft Network Client: Send unencrypted password to connect to third-party SMB servers” to “Disabled”
+pause
 
 echo Obtaining DNS Server Address Automatically Enabled
 netsh interface ipv4 set dnsservers name="Ethernet" source=dhcp

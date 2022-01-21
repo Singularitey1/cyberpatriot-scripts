@@ -403,3 +403,12 @@ echo Script has finished. Restart may be necesary to see all changes. Check sett
 echo Run the other scripts, vector shield, and GPOs
 
 pause
+
+:: https://www.google.com/search?q=how+to+disable+autoplay+for+all+drives&rlz=1C1SQJL_enUS864US864&oq=how+to+disable+autoplay+for+all+drives&aqs=chrome..69i57j33i22i29i30l6.5331j0j7&sourceid=chrome&ie=UTF-8
+:: https://www.thewindowsclub.com/how-to-update-other-microsoft-products-using-windows-update
+:: https://community.webroot.com/webroot-secureanywhere-antivirus-12/how-to-enable-phishing-filters-245622
+:: https://www.google.com/search?q=require+secure+rpc+communication&rlz=1C1SQJL_enUS864US864&sxsrf=AOaemvLUm32KYRpnRs66b0uWnu4lXkp6qg:1642777423974&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjX1bPmjsP1AhV1mXIEHTBHC-oQ_AUoAXoECAEQAw&biw=1280&bih=577&dpr=1.5#imgrc=hvFFSEfzQk_HBM
+:: https://dispel.io/blog/forcing-rdp-to-use-tls-encryption/
+:: https://www.google.com/search?q=do+not+allow+supported+plug+and+play+device+redirection&rlz=1C1SQJL_enUS864US864&sxsrf=AOaemvKWW7MvokZIXyZAaXTixsbphYRxRA:1642777495214&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjP6a-Ij8P1AhUxg3IEHfu9ADcQ_AUoA3oECAEQBQ&biw=1280&bih=577&dpr=1.5#imgrc=a6VzVwE36hjy3M
+:: https://askinglot.com/how-do-i-open-dns-manager-in-windows-10
+:: https://www.google.com/search?q=dynamic+updates+to+dns+server&rlz=1C1SQJL_enUS864US864&sxsrf=AOaemvIYsRSJ7QUdBn7p2co1kx5XkSBDww:1642777669070&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjbkKPbj8P1AhUHheAKHd7ODVIQ_AUoA3oECAEQBQ&biw=1280&bih=577&dpr=1.5#imgrc=PhbHriI9sjtovM
